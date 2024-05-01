@@ -14,9 +14,9 @@
   </head>
   <body>
     <div class="tabs-container">
-      <button class="tab-btn register">Sign up</button>
-      <button class="tab-btn login">Sign in</button>
-      <form action="" class="form register-form">
+      <button class="tab-btn register active fade-tab">Sign up</button>
+      <button class="tab-btn login fade-tab">Sign in</button>
+      <form action="" class="form register-form fade" id="signUp">
         <h1>Create an account</h1>
         <p>Username</p>
         <input type="text" placeholder="Enter username" name="username" />
@@ -53,7 +53,7 @@
         <p class="empty-data" style="display: none;">You must agree before submitting</p>
         <button type="submit" class="submit-btn">Sign up</button>
       </form>
-    <form action="" class="form login-form" style="display: none;">
+    <form action="" class="form login-form fade" style="display: none;" id="login">
         <p>Username</p>
         <input type="text" placeholder="Enter username" name="username" />
         <p class="empty-data" style="display: none;">This field is required</p>
@@ -68,5 +68,6 @@
         <button type="submit" class="submit-btn">Sign up</button>
     </form>
     </div>
+    <script src="index.js"></script>
   </body>
 </html>
