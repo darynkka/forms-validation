@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="tabs-container">
+      <button class="tab-btn register">Sign up</button>
+      <button class="tab-btn login">Sign in</button>
+      <form action="" class="form register-form">
+        <h1>Create an account</h1>
+        <p>Username</p>
+        <input type="text" placeholder="Enter username" name="username" />
+        <p class="invalid-data" style="display: none;">Please create username at least 3 and no more 15 characters</p>
+        <p class="empty-data" style="display: none;">This field is required</p>
+        <p class="valid-data" style="display: none;">Great job!</p>
+        <p>Email</p>
+        <input type="text" placeholder="Enter email" />
+        <p class="empty-data" style="display: none;">This field is required</p>
+        <p class="invalid-data" style="display: none;">Please write valid email with @</p>
+        <p class="valid-data" style="display: none;">Great job!</p>
+        <p>Password</p>
+        <input type="password" placeholder="Enter password" />
+        <p class="empty-data" style="display: none;">This field is required</p>
+        <p class="invalid-data" style="display: none;">Please create password less than 6 characters</p>
+        <p class="valid-data" style="display: none;">Great job!</p>
+        <div class="password-toggle">
+            <img src="/opened-eye.png" class="password-toggle" id="showPassword" alt="Show Password" style="display: none;">
+            <img src="/closed-eye.png" class="password-toggle" id="hidePassword" alt="Hide Password" >
+        </div>  
+        <p>Confirm password</p>
+        <input type="password" placeholder="Enter password" />
+        <p class="empty-data" style="display: none;">This field is required</p>
+        <p class="invalid-data" style="display: none;">Passwords do not match</p> 
+        <p class="valid-data" style="display: none;">Great job!</p>
+        <div class="password-toggle">
+            <img src="/opened-eye.png" class="password-toggle-confirm" id="showPassword" alt="Show Password" style="display: none;">
+            <img src="/closed-eye.png" class="password-toggle-confirm" id="hidePassword" alt="Hide Password">
+        </div>
+        <div class="agree-checkbox">
+        <input type="checkbox">
+        <p>I agree with Terms and Conditions</p>
+        </div>
+        <p class="empty-data" style="display: none;">You must agree before submitting</p>
+        <button type="submit" class="submit-btn">Sign up</button>
+      </form>
+    <form action="" class="form login-form" style="display: none;">
+        <p>Username</p>
+        <input type="text" placeholder="Enter username" name="username" />
+        <p class="empty-data" style="display: none;">This field is required</p>
+        <p>Password</p>
+        <input type="password" placeholder="Enter password" />
+        <p class="empty-data" style="display: none;">This field is required</p>
+        <p class="invalid-data" style="display: none;">Invalid password</p>
+        <div class="password-toggle">
+            <img src="/opened-eye.png" class="password-toggle" id="showPassword" alt="Show Password" style="display: none;">
+            <img src="/closed-eye.png" class="password-toggle" id="hidePassword" alt="Hide Password">
+        </div>
+        <button type="submit" class="submit-btn">Sign up</button>
+    </form>
+    </div>
+  </body>
+</html>
