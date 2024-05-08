@@ -12,62 +12,83 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="tabs-container">
-      <button class="tab-btn register active fade-tab">Sign up</button>
-      <button class="tab-btn login fade-tab">Sign in</button>
+      <div class="tab-btn-container">
+        <button class="tab-btn register active fade-tab">Sign up</button>
+        <button class="tab-btn login fade-tab">Sign in</button>
+      </div>
       <form action="" class="form register-form fade" id="signUp">
         <h1>Create an account</h1>
-        <p>Username</p>
+        <label>Username</label>
         <input type="text" placeholder="Enter username" name="username" />
-        <p class="invalid-data" style="display: none;">Please create username at least 3 and no more 15 characters</p>
-        <p class="empty-data" style="display: none;">This field is required</p>
-        <p class="valid-data" style="display: none;">Great job!</p>
-        <p>Email</p>
-        <input type="text" placeholder="Enter email" />
-        <p class="empty-data" style="display: none;">This field is required</p>
-        <p class="invalid-data" style="display: none;">Please write valid email with @</p>
-        <p class="valid-data" style="display: none;">Great job!</p>
-        <p>Password</p>
-        <input type="password" placeholder="Enter password" />
-        <p class="empty-data" style="display: none;">This field is required</p>
-        <p class="invalid-data" style="display: none;">Please create password less than 6 characters</p>
-        <p class="valid-data" style="display: none;">Great job!</p>
+        <p class="validation-message"></p>
+        <label>Email</label>
+        <input type="text" placeholder="Enter email" name="email" />
+        <p class="validation-message"></p>
+        <label>Password</label>
         <div class="password-toggle">
-            <img src="/opened-eye.png" class="password-toggle" id="showPassword" alt="Show Password" style="display: none;">
-            <img src="/closed-eye.png" class="password-toggle" id="hidePassword" alt="Hide Password" >
-        </div>  
-        <p>Confirm password</p>
-        <input type="password" placeholder="Enter password" />
-        <p class="empty-data" style="display: none;">This field is required</p>
-        <p class="invalid-data" style="display: none;">Passwords do not match</p> 
-        <p class="valid-data" style="display: none;">Great job!</p>
+          <input
+            type="password"
+            placeholder="Enter password"
+            id="userPassword"
+            name="password"
+          />
+          <p class="validation-message"></p>
+          <img
+            src="/closed-eye.png"
+            class="password-toggle"
+            id="passwordIcon"
+            alt="Hide Password"
+          />
+        </div>
+        <label>Confirm password</label>
         <div class="password-toggle">
-            <img src="/opened-eye.png" class="password-toggle-confirm" id="showPassword" alt="Show Password" style="display: none;">
-            <img src="/closed-eye.png" class="password-toggle-confirm" id="hidePassword" alt="Hide Password">
+          <input
+            type="password"
+            placeholder="Enter password"
+            id="confirmPassword"
+            name="confirmPassword"
+          />
+          <p class="validation-message"></p>
+          <img
+            src="/closed-eye.png"
+            class="password-toggle"
+            id="confirmIcon"
+            alt="Hide Password"
+          />
         </div>
-        <div class="agree-checkbox">
-        <input type="checkbox">
-        <p>I agree with Terms and Conditions</p>
-        </div>
-        <p class="empty-data" style="display: none;">You must agree before submitting</p>
         <button type="submit" class="submit-btn">Sign up</button>
       </form>
-    <form action="" class="form login-form fade" style="display: none;" id="login">
-        <p>Username</p>
+      <form
+        action=""
+        class="form login-form fade"
+        style="display: none"
+        id="login"
+      >
+        <label>Username</label>
         <input type="text" placeholder="Enter username" name="username" />
-        <p class="empty-data" style="display: none;">This field is required</p>
-        <p>Password</p>
-        <input type="password" placeholder="Enter password" />
-        <p class="empty-data" style="display: none;">This field is required</p>
-        <p class="invalid-data" style="display: none;">Invalid password</p>
+        <p class="validation-message"></p>
+        <label>Password</label>
         <div class="password-toggle">
-            <img src="/opened-eye.png" class="password-toggle" id="showPassword" alt="Show Password" style="display: none;">
-            <img src="/closed-eye.png" class="password-toggle" id="hidePassword" alt="Hide Password">
+          <input
+            type="password"
+            placeholder="Enter password"
+            id="loginPassword"
+          />
+          <img
+            src="/closed-eye.png"
+            class="password-toggle"
+            id="loginIcon"
+            alt="Hide Password"
+          />
+          <p class="validation-message"></p>
         </div>
-        <button type="submit" class="submit-btn">Sign up</button>
-    </form>
+        <button type="submit" class="submit-btn">Sign in</button>
+      </form>
     </div>
-    <script src="index.js"></script>
+    <div class="loader"></div>
+    <script defer src="index.js"></script>
   </body>
 </html>

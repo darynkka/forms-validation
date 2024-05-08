@@ -1,3 +1,7 @@
+:root {
+  --accent-color: #2e2d4f;
+}
+
 * {
   margin: 0;
   box-sizing: border-box;
@@ -6,74 +10,90 @@
 
 .tabs-container {
   margin: 0 auto;
-  width: 600px;
-  height: auto;
-  color: #ed7d3a;
+  max-width: 600px;
+  width: 100%;
+  color: var(--accent-color);
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-btn-container {
+  display: flex;
+  width: 100%;
 }
 
 .tab-btn {
   padding: 10px 20px;
-  background-color: rgba(119, 135, 139, 0.2);
+  background-color: rgba(172, 183, 185, 0.1);
   border: none;
   cursor: pointer;
-  color: #ed7d3a;
-  width: 248px;
+  color: var(--accent-color);
+  width: 50%;
   height: 50px;
   transition: background-color 0.3s ease;
   font-size: 20px;
   border-radius: 30px 30px 0px 0px;
 }
+
 .tab-btn:active,
 .tab-btn:focus {
-  background-color: #d17020;
+  background-color: var(--accent-color);
   box-shadow: 2px 2px 5px wheat;
   color: white;
-  outline-color: #d17020;
+  outline-color: var(--accent-color);
 }
+
 .active {
-  background-color: #d17020;
+  background-color: var(--accent-color);
   box-shadow: 2px 2px 5px wheat;
   color: white;
-  outline-color: #d17020;
+  outline-color: var(--accent-color);
   animation-name: buttonPop;
   animation-duration: 0.3s;
 }
+
 .form {
-  background-color: rgba(119, 135, 139, 0.2);
-  width: 500px;
-  height: 425px;
+  background-color: rgba(172, 183, 185, 0.1);
+  width: 100%;
   border-radius: 0px 0px 20px 20px;
   box-shadow: 2px 2px 5px gray;
   display: flex;
+    position: relative;
   flex-direction: column;
+  padding-bottom: 20px;
 }
+
 form input {
   padding: 7px;
   border: 1px solid #4d6a6d;
   border-radius: 5px;
   color: black;
-  width: 450px;
+  width: 90%;
   margin-bottom: 3px;
   margin-left: 20px;
-  outline-color: #ed7d3a;
+  outline-color: var(--accent-color);
 }
-form p {
+
+form p,
+label {
   margin-left: 20px;
   margin-top: 5px;
-  font-weight: bold;
 }
+
 h1 {
   font-size: 20px;
   text-transform: uppercase;
   text-align: center;
   margin-top: 15px;
-  color: #ed7d3a;
+  color: var(--accent-color);
 }
+
 .submit-btn {
   padding: 5px;
   border: none;
-  background-color: #ed7d3a;
+  background-color: var(--accent-color);
   font-size: 20px;
   color: white;
   border-radius: 6px;
@@ -81,78 +101,148 @@ h1 {
   margin: 0 auto;
   box-shadow: 2px 2px 2px gray;
   cursor: pointer;
-  margin-top: 3px;
-  outline-color: #ed7d3a;
+  margin-top: 5px;
+  outline-color: var(--accent-color);
 }
+
+.submit-btn:hover {
+  background-color: #11102c;
+  transition: background-color 0.3s ease;
+}
+
 form img {
   width: 30px;
   height: 30px;
 }
 
-.password-container {
+.password-toggle,
+.password-toggle-confirm {
   position: relative;
 }
 
-.password-toggle,
-.password-toggle-confirm {
+.password-toggle img {
   position: absolute;
-  top: 150px;
-  right: 260px;
+  top: 30%;
+  right: 50px;
   transform: translateY(-50%);
   cursor: pointer;
+  height: 25px;
+  width: 25px;
 }
+
 .password-toggle-confirm {
-  top: 217px;
+  top: 30px;
+  right: 40px;
 }
+
 .agree-checkbox {
   display: flex;
   flex-direction: row;
 }
+
 input[type="checkbox"] {
   width: 20px;
   height: 20px;
   margin-top: 6px;
 }
+
+.form-group {
+  position: relative;
+}
+
+.form-group input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.form-group input[type="checkbox"]::after {
+  content: "✔";
+  display: none;
+  position: absolute;
+  color: white;
+  bottom: 8px;
+  left: 3px;
+  width: 5px;
+  height: 10px;
+  border-width: 0 2px 2px 0;
+}
+
+.form-group input[type="checkbox"]:checked::after {
+  display: block;
+}
+
 .agree-checkbox p {
-  margin-left: 6px;
+  text-wrap: nowrap;
 }
+.checkbox-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
 input[type="checkbox"]:checked {
-  background-color: #ed7d3a;
+  background-color: var(--accent-color);
 }
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .invalid-input {
   border: 1px solid red;
 }
-.invalid-data,
-.empty-data {
+
+.validation-message {
   color: red;
   font-size: 13px;
   margin-top: 0;
   font-weight: 400;
+  width: 320px;
 }
-.valid-input {
-  border: 1px solid green;
-}
-.valid-data {
+
+.success-message {
   color: green;
   font-size: 13px;
   margin-top: 0;
   font-weight: 400;
+  width: 320px;
 }
+
+
+.valid-input {
+  border: 2px solid green;
+}
+
+
 .login-form {
-  height: 260px;
+  height: auto;
+  padding-bottom: 20px;
 }
-.login-form p {
-  margin-top: 20px;
-}
+
+
 .login-form .submit-btn {
   margin-top: 20px;
 }
+
+
+
 .login-form .password-toggle {
+  position: relative;
+}
+
+.login-form .password-toggle img {
   position: absolute;
-  top: 107px;
-  right: 260px;
+  top: 40%;
+  right: 50px;
   transform: translateY(-50%);
   cursor: pointer;
+  height: 25px;
+  width: 25px;
 }
 
 @keyframes buttonPop {
@@ -168,3 +258,94 @@ input[type="checkbox"]:checked {
     transform: scale(1);
   }
 }
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(204, 204, 204, 0.7);
+  transition: opacity 0.75s, visibility 0.75s;
+  opacity: 0;
+    visibility: hidden;
+}
+
+.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader::after {
+  content: " ";
+  width: 80px;
+  height: 80px;
+  border: 12px solid #dddddd;
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+  animation-play-state: paused;
+}
+
+.loader.spinning::after {
+  animation-play-state: running;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .tabs-container {
+    max-width: 400px;
+  }
+
+  .tab-btn {
+    font-size: 16px;
+    width: 48%;
+  }
+
+  .form {
+    width: 90%;
+  }
+
+  form input {
+    width: 85%;
+  }
+
+  .submit-btn {
+    width: 200px;
+  }
+}
+
+@media (max-width: 400px) {
+  .tabs-container {
+    max-width: 300px;
+  }
+
+  .tab-btn {
+    font-size: 14px;
+    width: 46%;
+  }
+
+  .form {
+    width: 100%;
+  }
+
+  form input {
+    width: 80%;
+  }
+}
+
+
+
