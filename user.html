@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="userStyle.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <h1>My friends</h1>
+      <a href="index.html" id="logOut">LOG OUT</a>
+    </header>
+    <div class="content-container">
+      <aside>
+        <div class="filters-section">
+          <input type="text" placeholder="Search by name.." class="name-search" id="nameSearch" />
+          <div class="age-section">
+            <p>By age</p>
+            <button type="button">Ascending &#9650;</button>
+            <button type="button">Descending &#9660;</button>
+          </div>
+          <div class="alphabet-section">
+            <p>By alphabet</p>
+            <button type="button">A-Z</button>
+            <button type="button">Z-A</button>
+          </div>
+          <div class="registration-section">
+            <p>Registration date</p>
+            <button type="button">Ascending &#9650;</button>
+            <button type="button">Descending &#9660;</button>
+          </div>
+
+          <div class="gender-wrapper">
+              <p>Gender option</p>
+            <div class="gender-filter">
+              <label for="male" class="radio-label">
+                <input type="radio" name="gender" id="male" />
+                Male
+              </label>
+              <label for="female" class="radio-label">
+                <input type="radio" name="gender" id="female" />
+                Female
+              </label>
+            </div>
+          </div>
+          <div class="filter-input">
+            <input type="text" placeholder="Filter by age" />
+            <input type="text" placeholder="Filter by country" />
+          </div>
+
+          <button type="button" class="reset-button" id="resetBtn">Reset</button>
+        </div>
+      </aside>
+      <main>
+        <div class="cards-container" id="cardsContainer"></div>
+      </main>
+    </div>
+    <script src="users.js"></script>
+  </body>
+</html>

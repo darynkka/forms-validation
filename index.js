@@ -71,6 +71,7 @@ const emailRegex = /^\S+@\S+\.\S+$/;
 
 function validateForm(form, formType) {
   const errors = {};
+  let hasErrors = false;
 
   const inputs = form.querySelectorAll("input");
   inputs.forEach((input) => {
@@ -82,19 +83,35 @@ function validateForm(form, formType) {
         if (inputValue.length < 3 || inputValue.length > 15) {
           errors.username =
             "Please create a username between 3 and 15 characters";
+          hasErrors = true;
+        } else if (!inputValue) {
+          errors.username = "This field is required";
+          hasErrors = true;
         }
       } else if (inputName === "email") {
         if (!emailRegex.test(inputValue)) {
           errors.email = "Please enter a valid email address";
+          hasErrors = true;
+        } else if (!inputValue) {
+          errors.email = "This field is required";
+          hasErrors = true;
         }
       } else if (inputName === "password") {
-        if (inputValue.length > 6) {
+        if (inputValue.length < 6) {
           errors.password = "Password must be at least 6 characters long";
+          hasErrors = true;
+        } else if (!inputValue) {
+          errors.password = "This field is required";
+          hasErrors = true;
         }
       } else if (inputName === "confirmPassword") {
         const password = form.querySelector('[name="password"]').value;
         if (inputValue !== password) {
           errors.confirmPassword = "Passwords do not match";
+          hasErrors = true;
+        } else if (!inputValue) {
+          errors.confirmPassword = "This field is required";
+          hasErrors = true;
         }
       }
     }
@@ -108,30 +125,62 @@ function validateForm(form, formType) {
     }
   });
 
-  return errors;
+  return { errors, hasErrors };
 }
 
 function displayValidationMessage(input, error) {
   const validationMessage = input.nextElementSibling;
-  const isRequired = !error && input.value.trim() === '';
-  validationMessage.textContent = isRequired ? 'This field is required' : error || 'Great job';
+  const isRequired = !error && input.value.trim() === "";
+  validationMessage.textContent = isRequired
+    ? "This field is required"
+    : error || "Great job";
   validationMessage.classList.remove("validation-message", "success-message");
-  validationMessage.classList.add(error || isRequired ? "validation-message" : "success-message");
-  input.classList.remove("invalid-input", "valid-input", "invalid-input");
-  input.classList.add(error ? "invalid-input" : isRequired ? "invalid-input" : "valid-input");
+  validationMessage.classList.add(
+    error || isRequired ? "validation-message" : "success-message"
+  );
+  input.classList.remove("valid-input", "invalid-input");
+  input.classList.add(
+    error ? "invalid-input" : isRequired ? "invalid-input" : "valid-input"
+  );
 }
 
 function clearValidationMessages(form) {
-  const inputs = form.querySelectorAll('input');
-  inputs.forEach(input => {
+  const inputs = form.querySelectorAll("input");
+  inputs.forEach((input) => {
     const validationMessage = input.nextElementSibling;
-    validationMessage.textContent = '';
-    validationMessage.classList.remove('success-message');
-    input.classList.remove('valid-input');
+    validationMessage.textContent = "";
+    validationMessage.classList.remove("success-message");
+    input.classList.remove("valid-input");
   });
 }
 
+function createUser(formData) {
+  const user = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
 
+  localStorage.setItem("user", JSON.stringify(user));
+}
+
+function isUserExist(username, password) {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+
+  if (
+    storedUser &&
+    storedUser.username === username &&
+    storedUser.password === password
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+// function deleteUser() {
+//   localStorage.removeItem("user");
+// }
 signUpForm.querySelectorAll("input").forEach((input) => {
   input.addEventListener("blur", () => {
     const errors = validateForm(signUpForm, "signUp");
@@ -139,7 +188,10 @@ signUpForm.querySelectorAll("input").forEach((input) => {
     displayValidationMessage(input, error);
   });
 });
-
+let logout = document.getElementById("logOut");
+// logout.addEventListener("click", () => {
+//   deleteUser();
+// });
 signInForm.querySelectorAll("input").forEach((input) => {
   input.addEventListener("blur", () => {
     const errors = validateForm(signInForm, "signIn");
@@ -148,44 +200,95 @@ signInForm.querySelectorAll("input").forEach((input) => {
   });
 });
 
-signUpForm.addEventListener('submit', async (event) => {
+signUpForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(signUpForm);
-  try {
-    const response = await sendData(formData);
-    console.log(response);
-    signUpForm.reset();
-    clearValidationMessages(signUpForm);
-  } catch (error) {
-    console.error(error);
+  const { errors, hasErrors } = validateForm(signUpForm, "signUp");
+
+  if (!hasErrors) {
+    try {
+      const response = await sendData(formData);
+      console.log(response);
+      signUpForm.reset();
+      createUser(formData);
+      clearValidationMessages(signUpForm);
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    Object.entries(errors).forEach(([inputName, errorMessage]) => {
+      const input = signUpForm.querySelector(`[name="${inputName}"]`);
+      displayValidationMessage(input, errorMessage);
+    });
   }
 });
 
-signInForm.addEventListener('submit', async (event) => {
+signInForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(signInForm);
-  hideMessages();
-  try {
-    const response = await sendData(formData);
-    console.log(response);
-    signInForm.reset();
-    clearValidationMessages(signInForm);
-  } catch (error) {
-    console.error(error);
+  const { errors, hasErrors } = validateForm(signInForm, "signIn");
+
+  if (!hasErrors) {
+    const username = formData.get("username");
+    const password = formData.get("password");
+
+    if (isUserExist(username, password)) {
+      try {
+        const response = await sendData(formData);
+        console.log(response);
+        signInForm.reset();
+        clearValidationMessages(signInForm);
+        window.location.href = "user.html";
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      const errorMessage = "Invalid username or password";
+      successModal.querySelector("#title").textContent = errorMessage;
+      successModal.classList.add("show");
+      setTimeout(() => {
+        successModal.classList.remove("show");
+      }, 3000);
+    }
+  } else {
+    Object.entries(errors).forEach(([inputName, errorMessage]) => {
+      const input = signInForm.querySelector(`[name="${inputName}"]`);
+      displayValidationMessage(input, errorMessage);
+    });
   }
 });
+
+const successModal = document.getElementById("successModal");
+const successMessage = document.getElementById("title");
 
 function sendData(formData) {
   startLoading();
+
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const success = Math.random() > 0.2; // 20% шансів на помилку
+      const result = { success: true, message: "Registration was successful" };
       stopLoading();
-      if (success) {
-        resolve("Registration successful");
+
+      if (result.success) {
+        resolve(result.message);
       } else {
-        reject("Server error");
+        reject(result.message);
       }
     }, 1500);
-  });
+  })
+    .then((successMessage) => {
+      successModal.querySelector("#title").textContent = successMessage;
+      successModal.classList.add("show");
+      setTimeout(() => {
+        successModal.classList.remove("show");
+      }, 3000);
+    })
+    .catch((errorMessage) => {
+      successModal.querySelector("#title").textContent = errorMessage;
+      successModal.classList.add("show");
+      setTimeout(() => {
+        successModal.classList.remove("show");
+      }, 3000);
+    });
 }
+

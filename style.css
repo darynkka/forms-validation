@@ -101,7 +101,7 @@ h1 {
   margin: 0 auto;
   box-shadow: 2px 2px 2px gray;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 15px;
   outline-color: var(--accent-color);
 }
 
@@ -122,7 +122,7 @@ form img {
 
 .password-toggle img {
   position: absolute;
-  top: 30%;
+  top: 31%;
   right: 50px;
   transform: translateY(-50%);
   cursor: pointer;
@@ -259,7 +259,7 @@ input[type="checkbox"]:checked {
   }
 }
 
-.loader {
+.loader, .success-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -271,12 +271,34 @@ input[type="checkbox"]:checked {
   background-color: rgba(204, 204, 204, 0.7);
   transition: opacity 0.75s, visibility 0.75s;
   opacity: 0;
-    visibility: hidden;
+  visibility: hidden;
+}
+
+.success-modal {
+  z-index: 1000;
 }
 
 .loader-hidden {
   opacity: 0;
   visibility: hidden;
+}
+
+.success-modal-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.success-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.success-modal h1 {
+  font-size: 20px;
+  text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
 }
 
 .loader::after {
@@ -346,6 +368,5 @@ input[type="checkbox"]:checked {
     width: 80%;
   }
 }
-
 
 
