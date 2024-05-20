@@ -266,7 +266,7 @@ function sendData(formData) {
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const result = { success: true, message: "Registration was successful" };
+      const result = { success: true, message: "Success" };
       stopLoading();
 
       if (result.success) {
