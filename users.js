@@ -13,10 +13,12 @@ async function fetchUsers() {
     return data.results;
   } catch (error) {
     console.error("ERROR:", error);
+    showModal("Server Error");
     throw error;
   }
 }
 
+// відобрження карток
 function renderUserCards(usersToRender) {
   const cardsContainer = document.getElementById("cardsContainer");
   cardsContainer.innerHTML = "";
@@ -102,10 +104,7 @@ window.addEventListener("scroll", async () => {
   }
 });
 
-document.getElementById("logOut").addEventListener("click", () => {
-  localStorage.clear();
-});
-
+// функції сортування 
 function sortUsersByAge(order) {
   users.sort((a, b) =>
     order === "asc" ? a.dob.age - b.dob.age : b.dob.age - a.dob.age
@@ -126,7 +125,6 @@ function sortUsersByName(order) {
   );
   if (users.length === 0) {
     showModal("No results found");
-    
   } else {
     renderUserCards(users);
   }
@@ -165,26 +163,31 @@ function sortUsersByAlphabet(order) {
   updateURL({ sortAlphabet: order });
 }
 
-document
-  .getElementById('alphAsc').addEventListener("click", () => {
-    sortUsersByAlphabet("asc");
-  });
+document.getElementById('alphAsc').addEventListener("click", () => {
+  sortUsersByAlphabet("asc");
+});
 
-document
-  .getElementById('alphDesc').addEventListener("click", () => {
-    sortUsersByAlphabet("desc");
-  });
+document.getElementById('alphDesc').addEventListener("click", () => {
+  sortUsersByAlphabet("desc");
+});
 
-document
-  .getElementById('ageAsc').addEventListener("click", () => {
-    sortUsersByAge("asc");
-  });
+document.getElementById('ageAsc').addEventListener("click", () => {
+  sortUsersByAge("asc");
+});
 
-document
-  .getElementById('ageDesc').addEventListener("click", () => {
-    sortUsersByAge("desc");
-  });
+document.getElementById('ageDesc').addEventListener("click", () => {
+  sortUsersByAge("desc");
+});
 
+document.getElementById('dateAsc').addEventListener("click", () => {
+  sortUsersByRegistrationDate("asc");
+});
+
+document.getElementById('dateDesc').addEventListener("click", () => {
+  sortUsersByRegistrationDate("desc");
+});
+
+// функції фільтрації
 function filterUsersByAge(query) {
   clearTimeout(typingTimeout);
   typingTimeout = setTimeout(() => {
@@ -197,7 +200,7 @@ function filterUsersByAge(query) {
       renderUserCards(filteredUsers);
     }
     updateURL({ age: query });
-  }, 500);
+  }, 400);
 }
 
 function filterUsersByCountry(query) {
@@ -214,26 +217,6 @@ function filterUsersByCountry(query) {
     updateURL({ country: query });
   }, 500);
 }
-
-document.querySelectorAll(".filter-input input").forEach((input) => {
-  input.addEventListener("input", () => {
-    const nameQuery = document.querySelector(".name-search").value.trim();
-    const ageQuery = document.getElementById('ageFilter').value.trim();
-    const countryQuery = document.getElementById('countryFilter').value.trim();
-    if (ageQuery) filterUsersByAge(ageQuery);
-    if (countryQuery) filterUsersByCountry(countryQuery);
-  });
-});
-
-document
-  .getElementById('dateAsc').addEventListener("click", () => {
-    sortUsersByRegistrationDate("asc");
-  });
-
-document
-  .getElementById('dateDesc').addEventListener("click", () => {
-    sortUsersByRegistrationDate("desc");
-  });
 
 function searchUsersByName(query) {
   clearTimeout(typingTimeout);
@@ -252,106 +235,112 @@ function searchUsersByName(query) {
   }, 500);
 }
 
-document.getElementById("nameSearch").addEventListener("input", (event) => {
-  const nameQuery = event.target.value.trim();
-  searchUsersByName(nameQuery);
-});
-
 function sortUsersByGender(gender) {
   const filteredUsers = originalUsers.filter(
     (user) => user.gender.toLowerCase() === gender.toLowerCase()
   );
   if (filteredUsers.length === 0) {
-    showModal("No results found");
+  showModal("No results found");
   } else {
-    renderUserCards(filteredUsers);
+  renderUserCards(filteredUsers);
   }
   updateURL({ gender: gender });
-}
+  }
 
-document.querySelectorAll(".gender-filter input").forEach((input) => {
-  input.addEventListener("change", (event) => {
-    const selectedGender = event.target.id;
-    sortUsersByGender(selectedGender);
+  document.querySelectorAll(".filter-input input").forEach((input) => {
+  input.addEventListener("input", () => {
+  const nameQuery = document.querySelector(".name-search").value.trim();
+  const ageQuery = document.getElementById('ageFilter').value.trim();
+  const countryQuery = document.getElementById('countryFilter').value.trim();
+
+  if (ageQuery) filterUsersByAge(ageQuery);
+  if (countryQuery) filterUsersByCountry(countryQuery);
   });
-});
+  });
 
-function updateURL(params) {
+  document.getElementById("nameSearch").addEventListener("input", (event) => {
+  const nameQuery = event.target.value.trim();
+  searchUsersByName(nameQuery);
+  });
+
+  document.querySelectorAll(".gender-filter input").forEach((input) => {
+  input.addEventListener("change", (event) => {
+  const selectedGender = event.target.id;
+  sortUsersByGender(selectedGender);
+  });
+  });
+
+  // оновлення урли
+  function updateURL(params) {
   const url = new URL(window.location.href);
   url.search = new URLSearchParams(params).toString();
   window.history.pushState({}, '', url.toString());
-}
-
-function applyFiltersFromURL() {
+  }
+  function applyFiltersFromURL() {
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
-
   if (params.has('age')) {
-    const ageQuery = params.get('age');
-    filterUsersByAge(ageQuery);
+  const ageQuery = params.get('age');
+  filterUsersByAge(ageQuery);
   }
-
   if (params.has('country')) {
-    const countryQuery = params.get('country');
-    filterUsersByCountry(countryQuery);
+  const countryQuery = params.get('country');
+  filterUsersByCountry(countryQuery);
   }
-
   if (params.has('sortAge')) {
-    const sortOrder = params.get('sortAge');
-    sortUsersByAge(sortOrder);
+  const sortOrder = params.get('sortAge');
+  sortUsersByAge(sortOrder);
   }
-
   if (params.has('sortName')) {
-    const sortOrder = params.get('sortName');
-    sortUsersByName(sortOrder);
+  const sortOrder = params.get('sortName');
+  sortUsersByName(sortOrder);
   }
-
   if (params.has('sortRegistration')) {
-    const sortOrder = params.get('sortRegistration');
-    sortUsersByRegistrationDate(sortOrder);
+  const sortOrder = params.get('sortRegistration');
+  sortUsersByRegistrationDate(sortOrder);
   }
-
   if (params.has('sortAlphabet')) {
-    const sortOrder = params.get('sortAlphabet');
-    sortUsersByAlphabet(sortOrder);
+  const sortOrder = params.get('sortAlphabet');
+  sortUsersByAlphabet(sortOrder);
   }
-
   if (params.has('nameQuery')) {
-    const nameQuery = params.get('name');
-    searchUsersByName(nameQuery);
+  const nameQuery = params.get('name');
+  searchUsersByName(nameQuery);
   }
-
   if (params.has('gender')) {
-    const gender = params.get('gender');
-    sortUsersByGender(gender);
+  const gender = params.get('gender');
+  sortUsersByGender(gender);
   }
-}
+  }
+  window.addEventListener('popstate', applyFiltersFromURL);
 
-window.addEventListener('popstate', applyFiltersFromURL);
 
-function resetFilters() {
+  function resetFilters() {
   users = [...originalUsers];
   renderUserCards(users);
   updateURL({});
-}
+  }
 
-function showModal(message) {
+  // модальне вікно для випадків коли нічого не знайдеться
+  function showModal(message) {
   const modal = document.getElementById('successModal');
   const title = document.getElementById('title');
   title.textContent = message;
   modal.classList.remove('success-modal-hidden');
   modal.classList.add('show');
-
   setTimeout(() => {
-    hideModal();  
+  hideModal();
   }, 2000);
   renderUserCards(originalUsers);
-}
-
-function hideModal() {
+  }
+  function hideModal() {
   const modal = document.getElementById('successModal');
   modal.classList.remove('show');
   modal.classList.add('success-modal-hidden');
-}
+  }
 
-document.getElementById("resetBtn").addEventListener("click", resetFilters);
+  document.getElementById("resetBtn").addEventListener("click", resetFilters);
+
+  document.getElementById("logOut").addEventListener("click", () => {
+  localStorage.clear();
+  });
