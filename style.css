@@ -122,7 +122,7 @@ form img {
 
 .password-toggle img {
   position: absolute;
-  top: 31%;
+  top: 40%;
   right: 50px;
   transform: translateY(-50%);
   cursor: pointer;

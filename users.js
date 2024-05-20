@@ -2,6 +2,7 @@ let users = [];
 let currentPage = 1;
 let isLoading = false;
 let originalUsers = [];
+let typingTimeout;
 
 async function fetchUsers() {
   try {
@@ -81,8 +82,6 @@ window.addEventListener("load", async () => {
   applyFiltersFromURL();
 });
 
-
-
 window.addEventListener("scroll", async () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
@@ -111,7 +110,11 @@ function sortUsersByAge(order) {
   users.sort((a, b) =>
     order === "asc" ? a.dob.age - b.dob.age : b.dob.age - a.dob.age
   );
-  renderUserCards(users);
+  if (users.length === 0) {
+    showModal("No results found");
+  } else {
+    renderUserCards(users);
+  }
   updateURL({ sortAge: order });
 }
 
@@ -121,7 +124,12 @@ function sortUsersByName(order) {
       ? a.name.first.localeCompare(b.name.first)
       : b.name.first.localeCompare(a.name.first)
   );
-  renderUserCards(users);
+  if (users.length === 0) {
+    showModal("No results found");
+    
+  } else {
+    renderUserCards(users);
+  }
   updateURL({ sortName: order });
 }
 
@@ -131,7 +139,11 @@ function sortUsersByRegistrationDate(order) {
       ? new Date(a.registered.date) - new Date(b.registered.date)
       : new Date(b.registered.date) - new Date(a.registered.date)
   );
-  renderUserCards(users);
+  if (users.length === 0) {
+    showModal("No results found");
+  } else {
+    renderUserCards(users);
+  }
   updateURL({ sortRegistration: order });
 }
 
@@ -145,85 +157,99 @@ function sortUsersByAlphabet(order) {
       return nameB.localeCompare(nameA);
     }
   });
-  renderUserCards(users);
+  if (users.length === 0) {
+    showModal("No results found");
+  } else {
+    renderUserCards(users);
+  }
   updateURL({ sortAlphabet: order });
 }
 
 document
-  .querySelector(".alphabet-section button:nth-of-type(1)")
-  .addEventListener("click", () => {
+  .getElementById('alphAsc').addEventListener("click", () => {
     sortUsersByAlphabet("asc");
   });
 
 document
-  .querySelector(".alphabet-section button:nth-of-type(2)")
-  .addEventListener("click", () => {
+  .getElementById('alphDesc').addEventListener("click", () => {
     sortUsersByAlphabet("desc");
   });
 
 document
-  .querySelector(".age-section button:nth-of-type(1)")
-  .addEventListener("click", () => {
+  .getElementById('ageAsc').addEventListener("click", () => {
     sortUsersByAge("asc");
   });
 
 document
-  .querySelector(".age-section button:nth-of-type(2)")
-  .addEventListener("click", () => {
+  .getElementById('ageDesc').addEventListener("click", () => {
     sortUsersByAge("desc");
   });
 
 function filterUsersByAge(query) {
-  const filteredUsers = originalUsers.filter((user) =>
-    user.dob.age.toString().includes(query)
-  );
-  renderUserCards(filteredUsers);
-  updateURL({ age: query });
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    const filteredUsers = originalUsers.filter((user) =>
+      user.dob.age.toString().includes(query)
+    );
+    if (filteredUsers.length === 0) {
+      showModal("No results found");
+    } else {
+      renderUserCards(filteredUsers);
+    }
+    updateURL({ age: query });
+  }, 500);
 }
 
 function filterUsersByCountry(query) {
-  const filteredUsers = originalUsers.filter((user) =>
-    user.location.country.toLowerCase().includes(query.toLowerCase())
-  );
-  renderUserCards(filteredUsers);
-  updateURL({ country: query });
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    const filteredUsers = originalUsers.filter((user) =>
+      user.location.country.toLowerCase().includes(query.toLowerCase())
+    );
+    if (filteredUsers.length === 0) {
+      showModal("No results found");
+    } else {
+      renderUserCards(filteredUsers);
+    }
+    updateURL({ country: query });
+  }, 500);
 }
 
 document.querySelectorAll(".filter-input input").forEach((input) => {
   input.addEventListener("input", () => {
     const nameQuery = document.querySelector(".name-search").value.trim();
-    const ageQuery = document
-      .querySelector(".filter-input input:nth-of-type(1)")
-      .value.trim();
-    const countryQuery = document
-      .querySelector(".filter-input input:nth-of-type(2)")
-      .value.trim();
-
+    const ageQuery = document.getElementById('ageFilter').value.trim();
+    const countryQuery = document.getElementById('countryFilter').value.trim();
     if (ageQuery) filterUsersByAge(ageQuery);
-    else if (countryQuery) filterUsersByCountry(countryQuery);
+    if (countryQuery) filterUsersByCountry(countryQuery);
   });
 });
 
 document
-  .querySelector(".registration-section button:nth-of-type(1)")
-  .addEventListener("click", () => {
+  .getElementById('dateAsc').addEventListener("click", () => {
     sortUsersByRegistrationDate("asc");
   });
 
 document
-  .querySelector(".registration-section button:nth-of-type(2)")
-  .addEventListener("click", () => {
+  .getElementById('dateDesc').addEventListener("click", () => {
     sortUsersByRegistrationDate("desc");
   });
 
 function searchUsersByName(query) {
-  const filteredUsers = users.filter((user) =>
-    `${user.name.first} ${user.name.last}`
-      .toLowerCase()
-      .includes(query.toLowerCase())
-  );
-  renderUserCards(filteredUsers);
-  updateURL({ nameQuery: query });
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    const filteredUsers = users.filter((user) =>
+      `${user.name.first} ${user.name.last}`
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    );
+    if (filteredUsers.length === 0) {
+      showModal("No results found");
+    } else {
+      renderUserCards(filteredUsers);
+    }
+    updateURL({ nameQuery: query });
+  }, 500);
 }
 
 document.getElementById("nameSearch").addEventListener("input", (event) => {
@@ -235,7 +261,11 @@ function sortUsersByGender(gender) {
   const filteredUsers = originalUsers.filter(
     (user) => user.gender.toLowerCase() === gender.toLowerCase()
   );
-  renderUserCards(filteredUsers);
+  if (filteredUsers.length === 0) {
+    showModal("No results found");
+  } else {
+    renderUserCards(filteredUsers);
+  }
   updateURL({ gender: gender });
 }
 
@@ -298,10 +328,30 @@ function applyFiltersFromURL() {
 }
 
 window.addEventListener('popstate', applyFiltersFromURL);
+
 function resetFilters() {
   users = [...originalUsers];
   renderUserCards(users);
   updateURL({});
+}
+
+function showModal(message) {
+  const modal = document.getElementById('successModal');
+  const title = document.getElementById('title');
+  title.textContent = message;
+  modal.classList.remove('success-modal-hidden');
+  modal.classList.add('show');
+
+  setTimeout(() => {
+    hideModal();  
+  }, 2000);
+  renderUserCards(originalUsers);
+}
+
+function hideModal() {
+  const modal = document.getElementById('successModal');
+  modal.classList.remove('show');
+  modal.classList.add('success-modal-hidden');
 }
 
 document.getElementById("resetBtn").addEventListener("click", resetFilters);
